@@ -1,0 +1,103 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    --padding: 20px;
+    --color: #9c9c9c;
+    --highlight-color: #242424;
+    --transition-time: 0.5s;
+}
+/*=== General styles === */
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+
+ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+/*=== The styles for the component === */
+#city-component {
+    position: absolute;
+    top:60%;
+    left:50%;
+    transform:translate3d(-50%,-60%,0);
+}
+
+.city-heading {
+    text-wrap: nowrap;
+}
+
+nav {
+    width: 90svw;
+    margin: 0 auto;
+    border-bottom: solid 1px var(--color);
+    display: flex;
+    .wrap {
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+.worldtime {
+    width: 90svw;
+    margin: 0 auto;
+    font-size: 5svw;
+    text-align: center;
+    opacity: 0;
+    transition: opacity var(--transition-time) ease;
+}
+
+
+#cities {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.city {
+    flex-grow: 1;
+    text-align: center;
+    user-select: none;
+
+    box-sizing: border-box;
+
+    h3 {
+        /* disabling pointer events to simplify things a bit since we'd still have to counter the width of the heading regardless.*/
+        pointer-events: none;
+        font-size: 1vw;
+        color:var(--color);
+        transition:color var(--transition-time) ease;
+        font-weight:400
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.clicked {
+        h3 {
+            color:var(--highlight-color);
+            transition:color var(--transition-time) ease;
+        }
+    }
+}
+
+/*=== Highlights what's currently selected === */
+#selector {
+    height: 2px;
+    position: relative;
+    top:1px;
+    width: 20px;
+    opacity: 0;
+    background: var(--highlight-color);
+    transition: transform var(--transition-time) ease, width var(--transition-time) ease;
+}
