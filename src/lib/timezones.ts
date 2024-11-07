@@ -39,6 +39,9 @@ export function getCurrentTime(locale: string) {
     return formatter.format(new Date())
 }
 
+/**
+ * Generates a random hex color
+ */
 export function getRandomColor(){
     const r = Math.floor(Math.random() * 255)
     const g = Math.floor(Math.random() * 255)

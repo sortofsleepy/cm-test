@@ -5,7 +5,11 @@ import {calculatePosition, measureText, updateFontSize} from "./lib/highlighter.
 import {getCurrentTime, getRandomColor} from "./lib/timezones.ts";
 
 //////////  SETUP //////////
+
+// current city selected
 let current_city: Element | null = null
+
+// holds refs to the nav items
 let items: Array<Element> = []
 
 // reference to time element
@@ -28,20 +32,24 @@ window.onload = () => {
         cities.innerHTML += buildCityNode(city)
     })
 
+    // re-reference as an array to make it a bit easier to work with
     items = Array.prototype.slice.call(cities.children)
+
+    // loop through and add click event
     items.forEach(city => {
         city.addEventListener("click", onClick)
     })
 
     // start from the first item; make all the necessary adjustments.
-    current_city = items[1]
+    current_city = items[0]
     current_city.classList.add("clicked")
+
+    // update font measurement
     const fontSize = getComputedStyle(items[0].children[0]).fontSize
     updateFontSize(ctx, fontSize)
 
-    // start from first item
+    // adjust selector
     adjustSelector()
-
 
     // start timer to update time
     setInterval(() => {
@@ -79,7 +87,6 @@ function onClick(e: Event) {
         }
     }
 }
-
 
 ////////// HIGHLIGHTER ADJUSTMENT //////////
 /**
