@@ -4,6 +4,8 @@ import {buildCityNode} from "./city.ts";
 import {calculatePosition, measureText, updateFontSize} from "./lib/highlighter.ts";
 
 //////////  SETUP //////////
+let current_city: Element | null = null
+let items:Array<Element> = []
 
 // get ref to navbar
 const cities = document.querySelector("#cities") as Element
@@ -15,24 +17,37 @@ const highlighter = document.querySelector("#selector") as HTMLElement
 const measure_canvas = document.createElement("canvas") as HTMLCanvasElement
 const ctx = measure_canvas.getContext("2d") as CanvasRenderingContext2D
 
-// build nodes for each city
-data.cities.forEach(city => {
-    cities.innerHTML += buildCityNode(city)
-})
+window.onload = () => {
 
-let items = Array.prototype.slice.call(cities.children)
-items.forEach(city => {
-    city.addEventListener("click",onClick)
-})
+    // build nodes for each city
+    data.cities.forEach(city => {
+        cities.innerHTML += buildCityNode(city)
+    })
 
-let current_city: Element | null = null
+    items = Array.prototype.slice.call(cities.children)
+    items.forEach(city => {
+        city.addEventListener("click", onClick)
+    })
 
-function onClick(e:Event){
+    // start from the first item; make all the necessary adjustments.
+    current_city = items[0]
+    current_city.classList.add("clicked")
+    let fontSize = getComputedStyle(items[0].children[0]).fontSize
+    updateFontSize(ctx, fontSize)
+    // start from first item
+    adjustSelector()
+}
+
+function onClick(e: Event) {
     const target = e.target as Element
+    current_city?.classList.remove("clicked")
+
     if (target.hasAttribute("data-section")) {
         // only set things up if we aren't already looking at the city in question
         if (current_city !== target) {
             current_city = target
+            current_city?.classList.add("clicked")
+
             adjustSelector()
         }
     }
