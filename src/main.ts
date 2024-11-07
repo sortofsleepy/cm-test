@@ -15,7 +15,6 @@ const highlighter = document.querySelector("#selector") as HTMLElement
 const measure_canvas = document.createElement("canvas") as HTMLCanvasElement
 const ctx = measure_canvas.getContext("2d") as CanvasRenderingContext2D
 
-
 // build nodes for each city
 data.cities.forEach(city => {
     cities.innerHTML += buildCityNode(city)
@@ -23,29 +22,13 @@ data.cities.forEach(city => {
 
 let items = Array.prototype.slice.call(cities.children)
 items.forEach(city => {
-    city.addEventListener("mouseover", onMouseOver)
-    city.addEventListener("mouseout", onMouseOut)
+    city.addEventListener("click",onClick)
 })
 
-cities.addEventListener("mouseout", onNavOut)
-
-// Setup the font settings based on one of the items in the list
-let fontSettings = getComputedStyle(items[0].children[0]).font
-ctx.font = fontSettings
-
-////////// HOVER HANDLING //////////
-
-// last element hovered over
 let current_city: Element | null = null
 
-/**
- * Handles things when we hover over a city
- * @param e
- */
-function onMouseOver(e: Event) {
-
+function onClick(e:Event){
     const target = e.target as Element
-
     if (target.hasAttribute("data-section")) {
         // only set things up if we aren't already looking at the city in question
         if (current_city !== target) {
@@ -53,27 +36,10 @@ function onMouseOver(e: Event) {
             adjustSelector()
         }
     }
-
 }
 
-/**
- * Handles when we mouse out on a city
- */
-function onMouseOut() {
-    current_city = null
-}
 
-/**
- * Handles when we aren't moused over on any city; hides highlighter after 1 sec
- */
-function onNavOut() {
-    setTimeout(() => {
-        if (current_city === null) {
-            highlighter.style.opacity = "0"
-        }
-    }, 1000)
-}
-
+////////// HIGHLIGHTER ADJUSTMENT //////////
 /**
  * Adjusts the selector item to match the width of the text and animates it towards the target.
  */
@@ -99,12 +65,15 @@ function adjustSelector() {
     }, 320)
 }
 
-
-let timeout:any
+////////// RESIZING //////////
+// When resizing, we need to adjust the width of the highlighter depending on the new font size
+// since that can change depending on the window width
+let timeout: any
 window.addEventListener("resize", () => {
     clearTimeout(timeout)
-    timeout = setTimeout(()=>{
+    timeout = setTimeout(() => {
         let fontSize = getComputedStyle(items[0].children[0]).fontSize
         updateFontSize(ctx, fontSize)
-    },1500)
+        adjustSelector()
+    }, 1500)
 })
