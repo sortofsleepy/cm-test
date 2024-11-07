@@ -34,9 +34,8 @@ body {
     min-height: 100vh;
 }
 
-h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
+h3{
+    text-wrap: nowrap;
 }
 
 ul, li {
@@ -46,11 +45,14 @@ ul, li {
 }
 
 nav {
-    max-width: 1280px;
-    padding-left: var(--padding-nav);
-    padding-right: var(--padding-nav);
-    margin: 0 auto;
+    width:90svw;
+    margin:0 auto;
     border-bottom: solid 1px white;
+}
+
+.wrap {
+    width:100%;
+    margin: 0 auto;
 }
 
 #cities {
@@ -61,8 +63,13 @@ nav {
 
 .city {
     flex-grow: 1;
+    text-align: center;
+
+
 }
 
-#indicator {
-
+#selector {
+    height:5px;
+    width:20px;
+    background:red;
 }
