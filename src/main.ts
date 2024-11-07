@@ -2,7 +2,7 @@ import './styles/style.pcss'
 import data from "./navigation.json"
 import {buildCityNode} from "./city.ts";
 import {calculatePosition, measureText, updateFontSize} from "./lib/highlighter.ts";
-import {getCurrentTime} from "./lib/timezones.ts";
+import {getCurrentTime, getRandomColor} from "./lib/timezones.ts";
 
 //////////  SETUP //////////
 let current_city: Element | null = null
@@ -45,7 +45,14 @@ window.onload = () => {
 
     // start timer to update time
     setInterval(() => {
-        time.children[0].innerHTML = getCurrentTime(current_city!.getAttribute("data-section") as string)
+        let t = getCurrentTime(current_city!.getAttribute("data-section") as string).split("")
+        t = t.map(itm => {
+            const col = getRandomColor()
+            return `<span style="color:${col}">${itm}</span>`
+        })
+
+        //const col = getRandomColor()
+        time.children[0].innerHTML = t.join("")
 
         if (time.children[0].innerHTML !== "") {
             time.style.opacity = "1"
