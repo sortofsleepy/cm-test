@@ -2,10 +2,14 @@ import './styles/style.pcss'
 import data from "./navigation.json"
 import {buildCityNode} from "./city.ts";
 import {calculatePosition, measureText, updateFontSize} from "./lib/highlighter.ts";
+import {getCurrentTime} from "./lib/timezones.ts";
 
 //////////  SETUP //////////
 let current_city: Element | null = null
 let items:Array<Element> = []
+
+// reference to time element
+const time = document.querySelector(".worldtime") as HTMLElement
 
 // get ref to navbar
 const cities = document.querySelector("#cities") as Element
@@ -30,12 +34,23 @@ window.onload = () => {
     })
 
     // start from the first item; make all the necessary adjustments.
-    current_city = items[0]
+    current_city = items[1]
     current_city.classList.add("clicked")
     let fontSize = getComputedStyle(items[0].children[0]).fontSize
     updateFontSize(ctx, fontSize)
     // start from first item
     adjustSelector()
+
+
+    // start timer
+    setInterval(()=>{
+        time.children[0].innerHTML = getCurrentTime(current_city!.getAttribute("data-section") as string)
+
+        if(time.children[0].innerHTML !== ""){
+            time.style.opacity = "1"
+        }
+
+    },1000)
 }
 
 function onClick(e: Event) {
