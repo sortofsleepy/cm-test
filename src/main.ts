@@ -1,11 +1,9 @@
 import './styles/style.pcss'
 import data from "./navigation.json"
 import {buildCityNode} from "./city.ts";
-import {calculatePosition, measureText} from "./lib/highlighter.ts";
+import {calculatePosition, measureText, updateFontSize} from "./lib/highlighter.ts";
 
-// Notes
-// using "as" here since we know these element either exist or are being created the moment the script loads.
-
+//////////  SETUP //////////
 
 // get ref to navbar
 const cities = document.querySelector("#cities") as Element
@@ -13,9 +11,9 @@ const cities = document.querySelector("#cities") as Element
 // get ref to highlighter
 const highlighter = document.querySelector("#selector") as HTMLElement
 
+// a canvas to measure the exact font dimensions.
 const measure_canvas = document.createElement("canvas") as HTMLCanvasElement
 const ctx = measure_canvas.getContext("2d") as CanvasRenderingContext2D
-ctx.font = getComputedStyle(document.body).font
 
 
 // build nodes for each city
@@ -31,8 +29,11 @@ items.forEach(city => {
 
 cities.addEventListener("mouseout", onNavOut)
 
+// Setup the font settings based on one of the items in the list
+let fontSettings = getComputedStyle(items[0].children[0]).font
+ctx.font = fontSettings
 
-////////// HOVER HANDLING /////////////////////////
+////////// HOVER HANDLING //////////
 
 // last element hovered over
 let current_city: Element | null = null
@@ -99,6 +100,11 @@ function adjustSelector() {
 }
 
 
+let timeout:any
 window.addEventListener("resize", () => {
-    // container_width = cities.getBoundingClientRect().width
+    clearTimeout(timeout)
+    timeout = setTimeout(()=>{
+        let fontSize = getComputedStyle(items[0].children[0]).fontSize
+        updateFontSize(ctx, fontSize)
+    },1500)
 })

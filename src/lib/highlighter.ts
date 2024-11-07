@@ -11,6 +11,25 @@ export function measureText(ctx: CanvasRenderingContext2D, text: string, additio
 }
 
 /**
+ * Updates the font size based on the new font size we want to use
+ * @param ctx {CanvasRenderingContext2D} the context to adjust
+ * @param newSize {string} the new font size to use
+ */
+export function updateFontSize(ctx: CanvasRenderingContext2D, newSize:string ) {
+    let ctxFontSettings = ctx.font.split(" ")
+
+    // look for font size; should be in "px"
+    ctxFontSettings = ctxFontSettings.map(itm => {
+        if(itm.search("px") !== -1){
+             return newSize
+        }
+        return itm
+    })
+
+    ctx.font = ctxFontSettings.join(" ")
+}
+
+/**
  * Calculates the position for the highlighting element
  * @param containerX {number} the x position of the parent container
  * @param elX {number} the x position of the element we're trying to highlight
