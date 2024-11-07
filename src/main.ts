@@ -6,7 +6,7 @@ import {getCurrentTime} from "./lib/timezones.ts";
 
 //////////  SETUP //////////
 let current_city: Element | null = null
-let items:Array<Element> = []
+let items: Array<Element> = []
 
 // reference to time element
 const time = document.querySelector(".worldtime") as HTMLElement
@@ -36,23 +36,28 @@ window.onload = () => {
     // start from the first item; make all the necessary adjustments.
     current_city = items[1]
     current_city.classList.add("clicked")
-    let fontSize = getComputedStyle(items[0].children[0]).fontSize
+    const fontSize = getComputedStyle(items[0].children[0]).fontSize
     updateFontSize(ctx, fontSize)
+
     // start from first item
     adjustSelector()
 
 
-    // start timer
-    setInterval(()=>{
+    // start timer to update time
+    setInterval(() => {
         time.children[0].innerHTML = getCurrentTime(current_city!.getAttribute("data-section") as string)
 
-        if(time.children[0].innerHTML !== ""){
+        if (time.children[0].innerHTML !== "") {
             time.style.opacity = "1"
         }
 
-    },1000)
+    }, 1000)
 }
 
+/**
+ * Responds to click event when clicking on an item
+ * @param e {Event} the event object from the click.
+ */
 function onClick(e: Event) {
     const target = e.target as Element
     current_city?.classList.remove("clicked")
@@ -92,12 +97,12 @@ function adjustSelector() {
     // with animation timing.
     setTimeout(() => {
         highlighter.style.opacity = "1"
-    }, 420)
+    }, 520)
 }
 
 ////////// RESIZING //////////
 // When resizing, we need to adjust the width of the highlighter depending on the new font size
-// since that can change depending on the window width
+// since that can change depending on the window width. Also adds a slight debounce
 let timeout: any
 window.addEventListener("resize", () => {
     clearTimeout(timeout)
@@ -105,5 +110,5 @@ window.addEventListener("resize", () => {
         let fontSize = getComputedStyle(items[0].children[0]).fontSize
         updateFontSize(ctx, fontSize)
         adjustSelector()
-    }, 600)
+    }, 550)
 })

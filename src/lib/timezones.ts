@@ -1,3 +1,7 @@
+
+// Side note : it should be possible to dynamically build the time zone name, but
+// not doing here given that we'd need to know special cases ahead of time anyways(like New York or Cupertino)
+// so just do a lookup table.
 const TIMEZONES = {
     "cupertino": "America/Los_Angeles",
     "new-york-city": "America/New_York",
@@ -8,11 +12,14 @@ const TIMEZONES = {
     "sydney": "Australia/Sydney"
 }
 
-
+/**
+ * Returns the current date + time for the specified locale id
+ * @param locale {string} the id of the locale to look up
+ */
 export function getCurrentTime(locale: string) {
 
     //@ts-ignore
-    // Ignoring cause this does technically work
+    // Ignoring cause this does technically works
     const lookup = TIMEZONES[locale]
 
     const options: Intl.DateTimeFormatOptions = {
@@ -24,7 +31,7 @@ export function getCurrentTime(locale: string) {
         hour: "numeric",
         minute: "numeric",
         second: "numeric",
-        hourCycle:"h12"
+        hourCycle: "h12"
     }
 
     const formatter = new Intl.DateTimeFormat("en-US", options)
