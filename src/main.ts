@@ -77,7 +77,7 @@ function adjustSelector() {
     // with animation timing.
     setTimeout(() => {
         highlighter.style.opacity = "1"
-    }, 320)
+    }, 420)
 }
 
 ////////// RESIZING //////////
@@ -90,5 +90,5 @@ window.addEventListener("resize", () => {
         let fontSize = getComputedStyle(items[0].children[0]).fontSize
         updateFontSize(ctx, fontSize)
         adjustSelector()
-    }, 1500)
+    }, 600)
 })
