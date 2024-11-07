@@ -65,6 +65,9 @@ nav {
     flex-grow: 1;
     text-align: center;
     user-select: none;
+    background:blue;
+    box-sizing: border-box;
+
 }
 
 .city h3 {
@@ -75,4 +78,5 @@ nav {
     height:5px;
     width:20px;
     background:red;
+    position: relative;
 }

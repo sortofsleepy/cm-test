@@ -5,6 +5,7 @@ import {buildCityNode} from "./city.ts";
 // Notes
 // using "as" here since we know these element either exist or are being created the moment the script loads.
 
+
 // get ref to navbar
 const cities = document.querySelector("#cities") as Element
 
@@ -55,18 +56,32 @@ function onMouseOver(e: Event) {
  * Adjusts the selector item to match the width of the text and animates it towards the target.
  */
 function adjustSelector() {
+    const el = current_city as HTMLElement
+    const text = el.children[0]
 
-    const el = current_city?.children[0] as Element
-    const width = measureText(el.innerHTML)
+    const rect = el.getBoundingClientRect()
+    const container = cities.getBoundingClientRect()
 
+    const textWidth = measureText(text.innerHTML)
+
+    highlighter.style.width = `${textWidth}px`
+
+    let x = rect.x - container.x
+    const offset = rect.width /2;
+    x += offset
+    x -= (textWidth / 2)
+
+    highlighter.style.left = `${x}px`
 }
 
 /**
- * Uses canvas element to measure the width of text minus box calculations
+ * Uses canvas element to measure the width of text minus box calculations.
+ * Adds a tiny bit of padding to better fit the text.
  * @param text{string} the text to measure
  */
 function measureText(text: string) {
-    return ctx.measureText(text).width
+    let w = ctx.measureText(text).width
+    return w + (w / 2)
 }
 
 window.addEventListener("resize", () => {
